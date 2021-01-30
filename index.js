@@ -34,38 +34,41 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
   if (user == 'maitestbot') {
-    //let productPicUrl = '';
+    //let productImgSrc = '';
     //let productName = message.split('bought a ').pop();
     //let customerName = message.split(' bought', 1)[0]
 
     //switch (productName) {
     //  case 'sweater!':
-    //    productPicUrl = beyGif;
+    //    productImgSrc = beyGif;
     //    break;
     //  default:
-    //    productPicUrl = pizzaGif;
+    //    productImgSrc = pizzaGif;
     //}
     const arrOfValues = message.split('|');
-    let productPicUrl = '';
+    const unknownProductImgSrc = beyGif;
+    const unknownProductName = 'mysterious something';
+    const unknownCustomerName = 'A most excellent person';
+    let productImgSrc = '';
     let productName = '';
     let customerName = '';
 
     if (arrOfValues.length == 3) {
-      productPicUrl = arrOfValues[0];
-      productName = arrOfValues[1];
-      customerName = arrOfValues[2];
+      productImgSrc = arrOfValues[0] === '' ? unknownProductImgSrc : arrOfValues[0];
+      productName = arrOfValues[1] === '' ? unknownProductName : arrOfValues[1];
+      customerName = arrOfValues[2] === '' ? unknownCustomerName : arrOfValues[2];
     }
     else {
-      productPicUrl = beyGif;
-      productName = 'mysterious something';
-      customerName = 'A most excellent person';
+      productImgSrc = unknownProductImgSrc;
+      productName = unknownProductName;
+      customerName = unknownCustomerName;
     }
     
-    new overlayAlert(productPicUrl, productName, customerName, magicChime);
+    new overlayAlert(productImgSrc, productName, customerName, magicChime);
   }
 };
 
-function overlayAlert(productPicUrl, productName, customerName, audio) {
+function overlayAlert(productImgSrc, productName, customerName, audio) {
   queue.add(async () => {
     //Chrome blocks this
     //audio.play();
@@ -74,11 +77,11 @@ function overlayAlert(productPicUrl, productName, customerName, audio) {
 
     //container.innerHTML = `
     //  <h1 class="text-shadows">${customerName + ' bought ' + productName}</h1>
-    //  <img src="${productPicUrl}" />
+    //  <img src="${productImgSrc}" />
     //`;
     container.innerHTML = `
       <h1 class="text-shadows">${overlayMessage}</h1>
-      <img src="${productPicUrl}" />
+      <img src="${productImgSrc}" />
     `;
 
     container.style.opacity = 1;
