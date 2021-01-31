@@ -76,7 +76,7 @@ function overlayAlert(overlayInfo, audio) {
     let overlayMessage =
       overlayInfo.customer.name + ' bought a ' +
       overlayInfo.product.name +
-      overlayInfo.product.quantity > 0 ? (' X' + overlayInfo.product.quantity + '!') : '!';
+      (overlayInfo.product.quantity > 0 ? (' X' + overlayInfo.product.quantity + '!') : '!');
 
     overlayMessage = fixArticles(overlayMessage);
 
