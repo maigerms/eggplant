@@ -33,55 +33,56 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 };
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-  if (user == 'maitestbot') {
-    //let productImgSrc = '';
-    //let productName = message.split('bought a ').pop();
-    //let customerName = message.split(' bought', 1)[0]
-
-    //switch (productName) {
-    //  case 'sweater!':
-    //    productImgSrc = beyGif;
-    //    break;
-    //  default:
-    //    productImgSrc = pizzaGif;
-    //}
+  if (flags.broadcaster) {
     const arrOfValues = message.split('|');
-    const unknownProductImgSrc = beyGif;
-    const unknownProductName = 'mysterious something';
-    const unknownCustomerName = 'A most excellent person';
-    let productImgSrc = '';
-    let productName = '';
-    let customerName = '';
+    const unknown = {
+      customer: {
+        name: 'A most excellent person'
+      },
+      product: {
+        name: 'mysterious something',
+        quantity: 0,
+        imgSrc: beyGif
+      }
+    };
+    let overlayInfo = {
+      customer: {
+        name: ''
+      },
+      product: {
+        name: '',
+        quantity: 0,
+        imgSrc: ''
+      }
+    };
 
-    if (arrOfValues.length == 3) {
-      productImgSrc = arrOfValues[0] === '' ? unknownProductImgSrc : arrOfValues[0];
-      productName = arrOfValues[1] === '' ? unknownProductName : arrOfValues[1];
-      customerName = arrOfValues[2] === '' ? unknownCustomerName : arrOfValues[2];
+    if (arrOfValues.length == 4) {
+      overlayInfo.customer.name = arrOfValues[0] === '' ? unknown.customer.name : arrOfValues[0];
+      overlayInfo.product.name = arrOfValues[1] === '' ? unknown.product.name : arrOfValues[1];
+      overlayInfo.product.quantity = arrOfValues[2] === '' ? unknown.product.quantity : arrOfValues[2];
+      overlayInfo.product.imgSrc = arrOfValues[3] === '' ? unknown.product.imgSrc : arrOfValues[3];
     }
     else {
-      productImgSrc = unknownProductImgSrc;
-      productName = unknownProductName;
-      customerName = unknownCustomerName;
+      overlayInfo = unknown;
     }
     
-    new overlayAlert(productImgSrc, productName, customerName, magicChime);
+    new overlayAlert(overlayInfo, magicChime);
   }
 };
 
-function overlayAlert(productImgSrc, productName, customerName, audio) {
+function overlayAlert(overlayInfo, audio) {
   queue.add(async () => {
-    //Chrome blocks this
-    //audio.play();
-    let overlayMessage = customerName + ' bought a ' + productName + '!';
+    audio.play(); //Chrome blocks this, but it should play fine in OBS
+    let overlayMessage =
+      overlayInfo.customer.name + ' bought a ' +
+      overlayInfo.product.name + ' X' +
+      overlayInfo.product.quantity + '!';
+
     overlayMessage = fixArticles(overlayMessage);
 
-    //container.innerHTML = `
-    //  <h1 class="text-shadows">${customerName + ' bought ' + productName}</h1>
-    //  <img src="${productImgSrc}" />
-    //`;
     container.innerHTML = `
       <h1 class="text-shadows">${overlayMessage}</h1>
-      <img src="${productImgSrc}" />
+      <img src="${overlayInfo.product.imgSrc}" />
     `;
 
     container.style.opacity = 1;
