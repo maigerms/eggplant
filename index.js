@@ -34,8 +34,8 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
   if (flags.broadcaster) {
-    const arrOfValues = message.split('|');
-    const unknown = {
+    let arrOfValues = message.split('|');
+    let unknown = {
       customer: {
         name: 'A most excellent person'
       },
@@ -75,8 +75,7 @@ function overlayAlert(overlayInfo, audio) {
     audio.play(); //Chrome blocks this, but it should play fine in OBS
     let overlayMessage =
       overlayInfo.customer.name + ' bought a ' +
-      overlayInfo.product.name +
-      (overlayInfo.product.quantity > 0 ? (' X' + overlayInfo.product.quantity + '!') : '!');
+      overlayInfo.product.name + (overlayInfo.product.quantity > 0 ? (' X' + overlayInfo.product.quantity + '!') : '!');
 
     overlayMessage = fixArticles(overlayMessage);
 
