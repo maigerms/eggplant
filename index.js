@@ -75,7 +75,7 @@ function overlayAlert(overlayInfo, audio) {
     audio.play(); //Chrome blocks this, but it should play fine in OBS
     let overlayMessage =
       overlayInfo.customer.name + ' bought a ' +
-      overlayInfo.product.name + (overlayInfo.product.quantity > 0 ? (' X' + overlayInfo.product.quantity + '!') : '!');
+      overlayInfo.product.name + (overlayInfo.product.quantity > 1 ? (' X' + overlayInfo.product.quantity + '!') : '!');
 
     overlayMessage = fixArticles(overlayMessage);
 
